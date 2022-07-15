@@ -80,7 +80,7 @@ class RuleParser:
                 data['weekday'].isin([0, 1, 2, 3, 4])
             &
                 data['week'] % 2 == 0,
-            'to_be_at_office'
+            'to_be_at_office'#
         ] = 0
         data.loc[
             (
