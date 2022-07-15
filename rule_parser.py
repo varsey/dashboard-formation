@@ -77,10 +77,14 @@ class RuleParser:
                     (data['weekday'] != 6)
             )
             &
-                data['weekday'].isin([0, 1, 2, 3, 4])
+            (
+                (data['weekday'].isin([0, 1, 2, 3, 4]))
+            )
             &
-                data['week'] % 2 == 0,
-            'to_be_at_office'#
+            (
+                (data['week'] % 2 == 0)
+            ),
+            'to_be_at_office'
         ] = 0
         data.loc[
             (
@@ -91,9 +95,13 @@ class RuleParser:
                     (data['weekday'] != 6)
             )
             &
-                data['weekday'].isin([0, 1, 2, 3, 4])
+            (
+                (data['weekday'].isin([0, 1, 2, 3, 4]))
+            )
             &
-                data['week'] % 2 == 1,
+            (
+                (data['week'] % 2 == 1)
+            ),
             'to_be_at_office'
         ] = 1
         self.data = data
@@ -103,12 +111,37 @@ class RuleParser:
         data.loc[
             (
                     (data['tab_num'] == self.init_table.tab_num.to_list()[tab_num_index]) &
-                    (data['ymd_date'] < self.finish_date_dict[tab_num_index].to_datetime64()) &
-                    (data['ymd_date'] > self.start_date_dict[tab_num_index].to_datetime64()) &
+                    (data['ymd_date'] <= self.finish_date_dict[tab_num_index].to_datetime64()) &
+                    (data['ymd_date'] >= self.start_date_dict[tab_num_index].to_datetime64()) &
                     (data['weekday'] != 5) &
                     (data['weekday'] != 6)
-            ) &
-                (data['weekday'].isin([1, 2, 3, 4])),
+            )
+            &
+            (
+                (data['weekday'].isin([0, 1, 2, 3, 4]))
+            )
+            &
+            (
+                (data['halfweek'] % 2 == 0)
+            ),
+            'to_be_at_office'
+        ] = 0
+        data.loc[
+            (
+                    (data['tab_num'] == self.init_table.tab_num.to_list()[tab_num_index]) &
+                    (data['ymd_date'] <= self.finish_date_dict[tab_num_index].to_datetime64()) &
+                    (data['ymd_date'] >= self.start_date_dict[tab_num_index].to_datetime64()) &
+                    (data['weekday'] != 5) &
+                    (data['weekday'] != 6)
+            )
+            &
+            (
+                (data['weekday'].isin([0, 1, 2, 3, 4]))
+            )
+            &
+            (
+                (data['halfweek'] % 2 == 1)
+            ),
             'to_be_at_office'
         ] = 1
         self.data = data
