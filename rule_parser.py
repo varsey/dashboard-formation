@@ -59,7 +59,7 @@ class RuleParser:
         self.data = data
         return data
 
-    def transformer_2(self, data: DataFrame, tab_num_index: int):
+    def mixed_regime_day(self, tab_num_index: int):
         weeks_clms = ['wday_type01', 'wday_type02', 'wday_type03', 'wday_type04', 'wday_type05']
         week_regime = self.init_table[weeks_clms][tab_num_index:tab_num_index+1].to_dict()
         for r, v in week_regime.items():
@@ -71,7 +71,10 @@ class RuleParser:
                 ones_days.append(k)
             else:
                 zero_days.append(k)
+        return ones_days, zero_days
 
+    def transformer_2(self, data: DataFrame, tab_num_index: int):
+        ones_days, zero_days = self.mixed_regime_day(tab_num_index)
         data.loc[
             (
                     (data['tab_num'] == self.init_table.tab_num.to_list()[tab_num_index]) &
